@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { fadeUp } from "./animations/motions.js";
+import { fadeUp } from "../animations/motions.js";
 
 export default function FinalReport({ report }) {
     if (!report) return null;

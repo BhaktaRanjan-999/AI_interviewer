@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { fadeIn } from "./animations/motions.js";
+import { fadeIn } from "../animations/motions.js";
 
 export default function ChatPanel({ messages }) {
     return (
