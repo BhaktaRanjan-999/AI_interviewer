@@ -29,7 +29,111 @@ function App() {
   const startTimeRef = useRef(null);
   const recognitionRef = useRef(null);
 
-  /* ---------------- Speech Recognition ---------------- */
+  // ================================
+  // NEW COMPONENTS - DEFINED INLINE
+  // ================================
+
+  function SessionSummary({ targetRole, messages }) {
+    const totalQ = messages.filter((m) => m.sender === "ai").length;
+    const totalAnswers = messages.filter((m) => m.sender === "user").length;
+
+    return (
+      <div className="session-summary">
+        <div className="summary-item">
+          <span className="label">Role</span>
+          <span className="value">{targetRole}</span>
+        </div>
+        <div className="summary-item">
+          <span className="label">Questions</span>
+          <span className="value">{totalQ}</span>
+        </div>
+        <div className="summary-item">
+          <span className="label">Answers</span>
+          <span className="value">{totalAnswers}</span>
+        </div>
+      </div>
+    );
+  }
+
+  function QuestionTimeline({ messages }) {
+    const questions = messages.filter((m) => m.sender === "ai");
+    const currentIndex = questions.length - 1;
+
+    return (
+      <div className="question-timeline">
+        {questions.length === 0 ? (
+          <span className="timeline-empty">Questions will appear here</span>
+        ) : (
+          questions.map((q, idx) => (
+            <div
+              key={idx}
+              className={`timeline-dot ${idx === currentIndex ? "active" : ""}`}
+              title={q.text.slice(0, 30) + "..."}
+            >
+              <span className="dot-number">{idx + 1}</span>
+            </div>
+          ))
+        )}
+      </div>
+    );
+  }
+
+  function ConfidenceMeter({ wpm }) {
+    const percent = Math.min(wpm / 2, 100);
+    let label = "Warm up";
+    let color = "bg-orange-400";
+
+    if (wpm >= 90) {
+      label = "Excellent";
+      color = "bg-green-500";
+    } else if (wpm >= 60) {
+      label = "Good";
+      color = "bg-blue-500";
+    } else if (wpm >= 30) {
+      label = "Fair";
+      color = "bg-yellow-500";
+    }
+
+    return (
+      <div className="confidence">
+        <div className="confidence-header">
+          <span>Confidence</span>
+          <span className="confidence-label">{label}</span>
+        </div>
+        <div className="confidence-bar">
+          <div
+            className={`bar-fill ${color}`}
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+        <div className="confidence-scale">
+          <span>30</span>
+          <span>60</span>
+          <span>90+</span>
+        </div>
+      </div>
+    );
+  }
+
+  function HelperHints({ isRecording, hasStarted }) {
+    if (isRecording) return null;
+
+    return (
+      <div className="helper-hints">
+        <div className="hint-icon">💡</div>
+        <div className="hint-text">
+          {!hasStarted
+            ? "Press 'Push to Answer' and speak naturally. AI tracks pace & fillers."
+            : "Structure answers: Situation → Action → Result"}
+        </div>
+      </div>
+    );
+  }
+
+  // ================================
+  // EXISTING LOGIC (unchanged)
+  // ================================
+
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -71,7 +175,6 @@ function App() {
     recognitionRef.current = recognition;
   }, []);
 
-  /* ---------------- Handle Turn ---------------- */
   const handleTurnComplete = async (transcript) => {
     const history = [...messages, { sender: "user", text: transcript }];
     setMessages(history);
@@ -113,13 +216,16 @@ function App() {
     if (!isRecording) recognitionRef.current.start();
   };
 
-  /* ---------------- UI ---------------- */
+  const hasStarted = messages.length > 0;
+
+  // ================================
+  // UPDATED JSX LAYOUT
+  // ================================
+
   return (
     <div className="container">
       <div className="layout">
-
         <div className="center">
-
           {/* Role Selector */}
           <div className="role-bar">
             <span>Role</span>
@@ -132,14 +238,22 @@ function App() {
 
           <InterviewerHeader isRecording={isRecording} />
 
+          {/* NEW: Session Summary */}
+          <SessionSummary targetRole={targetRole} messages={messages} />
+
           {/* Progress Bar */}
-          <div className="progress">
-            <div style={{ width: `${Math.min(messages.length * 10, 100)}%` }} />
+          <div className="progress-track">
+            <div
+              className="progress-fill"
+              style={{ width: `${Math.min(messages.length * 10, 100)}%` }}
+            />
           </div>
+
+          {/* NEW: Question Timeline */}
+          <QuestionTimeline messages={messages} />
 
           <ChatPanel messages={messages} />
 
-          {/* Mic Wave */}
           {isRecording && <div className="wave" />}
 
           <ControlPanel
@@ -148,24 +262,16 @@ function App() {
             getFeedback={getFeedback}
           />
 
-          {/* Confidence Meter */}
-          <div className="confidence">
-            Confidence
-            <div className="bar">
-              <div
-                style={{
-                  width: `${Math.min(liveFeedback.wpm / 2, 100)}%`,
-                }}
-              />
-            </div>
-          </div>
+          {/* NEW: Enhanced Confidence */}
+          <ConfidenceMeter wpm={liveFeedback.wpm} />
+
+          {/* NEW: Helper Hints */}
+          <HelperHints isRecording={isRecording} hasStarted={hasStarted} />
 
           <FinalReport report={finalReport} />
         </div>
 
-        {/* Stats BELOW */}
         <LiveStatsCard liveFeedback={liveFeedback} />
-
       </div>
     </div>
   );
