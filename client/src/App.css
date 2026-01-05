@@ -419,3 +419,13 @@ body {
     margin-top: 1rem;
   }
 }
+
+.controls {
+  display: flex;
+  gap: 2rem;
+  /* CHANGED: Increased from 1rem to 2rem */
+  justify-content: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}

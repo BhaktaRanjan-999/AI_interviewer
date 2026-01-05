@@ -14,7 +14,7 @@ export default function ControlPanel({ isRecording, startListening, getFeedback 
             </motion.button>
 
             <motion.button
-                className="danger"
+                className=" danger"
                 onClick={getFeedback}
                 whileHover={{ scale: 1.05 }}
             >
