@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp } from "C:/Users/Asus/Desktop/VS CODE/ai_interviewer/client/src/animations/motions.js";
+import { fadeUp } from "./animations/motions.js";
 
 export default function QuestionCard({ question }) {
     return (

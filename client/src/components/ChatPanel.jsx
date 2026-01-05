@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { fadeIn } from "C:/Users/Asus/Desktop/VS CODE/ai_interviewer/client/src/animations/motions.js";
+import { fadeIn } from "./animations/motions.js";
 
 export default function ChatPanel({ messages }) {
     return (

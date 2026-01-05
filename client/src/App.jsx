@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./App.css";
 
-import InterviewerHeader from "C:/Users/Asus/Desktop/VS CODE/ai_interviewer/client/src/components/InterviewHeader.jsx";
-import ChatPanel from "C:/Users/Asus/Desktop/VS CODE/ai_interviewer/client/src/components/ChatPanel.jsx";
-import ControlPanel from "C:/Users/Asus/Desktop/VS CODE/ai_interviewer/client/src/components/ControlPanel.jsx";
-import LiveStatsCard from "C:/Users/Asus/Desktop/VS CODE/ai_interviewer/client/src/components/LiveStatsCard.jsx";
-import FinalReport from "C:/Users/Asus/Desktop/VS CODE/ai_interviewer/client/src/components/FinalReport.jsx";
+import InterviewerHeader from "./components/InterviewHeader.jsx";
+import ChatPanel from "./components/ChatPanel.jsx";
+import ControlPanel from "./components/ControlPanel.jsx";
+import LiveStatsCard from "./components/LiveStatsCard.jsx";
+import FinalReport from "./components/FinalReport.jsx";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "https://ai-inteviewer-backend.onrender.com";
