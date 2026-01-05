@@ -9,7 +9,7 @@ import LiveStatsCard from "./components/LiveStatsCard.jsx";
 import FinalReport from "./components/FinalReport.jsx";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://ai-inteviewer-backend.onrender.com";
+  import.meta.env.VITE_API_URL || "https://ai-interviewer-dyqf.onrender.com";
 
 function App() {
   const [messages, setMessages] = useState([]);
