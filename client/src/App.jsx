@@ -29,10 +29,6 @@ function App() {
   const startTimeRef = useRef(null);
   const recognitionRef = useRef(null);
 
-  // ================================
-  // NEW COMPONENTS - DEFINED INLINE
-  // ================================
-
   function SessionSummary({ targetRole, messages }) {
     const totalQ = messages.filter((m) => m.sender === "ai").length;
     const totalAnswers = messages.filter((m) => m.sender === "user").length;
@@ -100,12 +96,14 @@ function App() {
           <span>Confidence</span>
           <span className="confidence-label">{label}</span>
         </div>
+
         <div className="confidence-bar">
           <div
             className={`bar-fill ${color}`}
             style={{ width: `${percent}%` }}
           />
         </div>
+
         <div className="confidence-scale">
           <span>30</span>
           <span>60</span>
@@ -114,6 +112,7 @@ function App() {
       </div>
     );
   }
+
 
   function HelperHints({ isRecording, hasStarted }) {
     if (isRecording) return null;
@@ -130,9 +129,6 @@ function App() {
     );
   }
 
-  // ================================
-  // EXISTING LOGIC (unchanged)
-  // ================================
 
   useEffect(() => {
     const SpeechRecognition =
@@ -218,9 +214,6 @@ function App() {
 
   const hasStarted = messages.length > 0;
 
-  // ================================
-  // UPDATED JSX LAYOUT
-  // ================================
 
   return (
     <div className="container">
@@ -269,9 +262,11 @@ function App() {
           <HelperHints isRecording={isRecording} hasStarted={hasStarted} />
 
           <FinalReport report={finalReport} />
-        </div>
 
+
+        </div>
         <LiveStatsCard liveFeedback={liveFeedback} />
+
       </div>
     </div>
   );
